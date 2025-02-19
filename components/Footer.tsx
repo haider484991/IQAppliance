@@ -154,14 +154,17 @@ export default function Footer() {
                         .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
                         .join(' ');
 
+                      // Direct link to appliance repair service page
+                      const servicePageUrl = `/${state.id}/${formattedSlug}/appliance-repair`;
+
                       return (
                         <Link
                           key={`${state.id}-city-${index}`}
-                          href={`/${state.id}/${formattedSlug}/appliance-repair`}
+                          href={servicePageUrl}
                           className="text-gray-300 hover:text-blue-200 transition-colors text-sm flex items-center group"
                         >
                           <ChevronRight className="h-3 w-3 mr-1 flex-shrink-0 text-blue-400 group-hover:text-blue-200" />
-                          <span className="truncate">{formattedName} Appliance Repair</span>
+                          <span className="truncate">{formattedName}</span>
                         </Link>
                       );
                     })}
