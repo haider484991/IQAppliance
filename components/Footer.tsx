@@ -148,7 +148,7 @@ export default function Footer() {
                 {expandedState === state.id && (
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 p-4 bg-blue-900/20 rounded-lg mb-2">
                     {state.majorCities.map((city, index) => {
-                      const formattedSlug = city.toLowerCase().replace(/\s+/g, '-');
+                      const formattedSlug = `${city.toLowerCase().replace(/\s+/g, '-')}-${state.abbreviation.toLowerCase()}`;
                       const formattedName = city
                         .split(/\s+/)
                         .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -161,7 +161,7 @@ export default function Footer() {
                           className="text-gray-300 hover:text-blue-200 transition-colors text-sm flex items-center group"
                         >
                           <ChevronRight className="h-3 w-3 mr-1 flex-shrink-0 text-blue-400 group-hover:text-blue-200" />
-                          <span className="truncate">{formattedName}</span>
+                          <span className="truncate">{formattedName} Appliance Repair</span>
                         </Link>
                       );
                     })}

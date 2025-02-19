@@ -18,10 +18,10 @@ module.exports = {
     '/texas/*',
     '/arizona/*',
     '/locations/*',  // Exclude old location structure
-    '/new_york/*/*',  // Exclude city landing pages but allow service pages
-    '/new_jersey/*/*',
-    '/pennsylvania/*/*',
-    '!/new_york/*/*/appliance-repair',  // Keep service pages
+    '/new_york/*',  // Exclude all state URLs by default
+    '/new_jersey/*',
+    '/pennsylvania/*',
+    '!/new_york/*/*/appliance-repair',  // Keep only service pages
     '!/new_jersey/*/*/appliance-repair',
     '!/pennsylvania/*/*/appliance-repair'
   ],
@@ -86,17 +86,14 @@ module.exports = {
     ],
   },
   transform: async (config, path) => {
-    // Only transform paths for tri-state area
-    if (path.startsWith('/florida/') || 
-        path.startsWith('/california/') || 
-        path.startsWith('/texas/') || 
-        path.startsWith('/arizona/') ||
-        path.startsWith('/locations/')) {
-      return null; // Skip these paths
+    // Skip city pages and only include service pages
+    if (path.match(/\/(new_york|new_jersey|pennsylvania)\/[^/]+$/) || 
+        path.match(/\/(florida|california|texas|arizona)\//)) {
+      return null;
     }
 
     const priority = path === '/' ? 1.0 : 
-                    path.startsWith('/new_york/') || path.startsWith('/new_jersey/') || path.startsWith('/pennsylvania/') ? 0.9 :
+                    path.match(/\/(new_york|new_jersey|pennsylvania)\/[^/]+\/appliance-repair$/) ? 0.8 :
                     path.startsWith('/about') || path.startsWith('/contact') ? 0.8 :
                     config.priority;
 
@@ -122,15 +119,15 @@ module.exports = {
       // Add service pages for each state's cities
       for (const cityName of state.majorCities) {
         cityCount++;
-        const citySlug = cityName.toLowerCase().replace(/\s+/g, '-');
+        const citySlug = `${cityName.toLowerCase().replace(/\s+/g, '-')}-${state.abbreviation.toLowerCase()}`;
 
-        // Add city page
-        result.push({
-          loc: `/${state.id}/${citySlug}`,
-          priority: 0.9,
-          changefreq: 'daily',
-          lastmod: new Date().toISOString()
-        });
+        // Skip city pages since we don't want them in sitemap
+        // result.push({
+        //   loc: `/${state.id}/${citySlug}`,
+        //   priority: 0.9,
+        //   changefreq: 'daily',
+        //   lastmod: new Date().toISOString()
+        // });
 
         // Add service pages for each city
         for (const service of services) {
