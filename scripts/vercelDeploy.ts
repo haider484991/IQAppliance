@@ -50,23 +50,17 @@ async function loadSubmissionHistory(): Promise<SubmissionHistory> {
         throw new Error('Missing or invalid fields in submission history');
       }
       
-      return parsedData as SubmissionHistory;
-    } catch (parseError) {
-      console.error('Error parsing submission history:', parseError);
-      throw new Error('Failed to parse submission history');
+      return parsedData;
+    } catch (parseError: any) {
+      throw new Error(`Failed to parse submission history: ${parseError.message}`);
     }
   } catch (error) {
-    console.log('Creating new submission history file');
-    // Return default history if file doesn't exist or is invalid
-    const defaultHistory: SubmissionHistory = {
-      lastSubmissionDate: '',
+    // If file doesn't exist or other error, return default structure
+    return {
+      lastSubmissionDate: new Date().toISOString(),
       submittedUrls: [],
       currentIndex: 0
     };
-
-    // Create history file if it doesn't exist
-    await saveSubmissionHistory(defaultHistory);
-    return defaultHistory;
   }
 }
 
@@ -252,77 +246,83 @@ async function submitUrlsToIndexNow(urls: string[]): Promise<{ success: boolean;
 }
 
 async function submitToGoogleIndexing(urls: string[]): Promise<void> {
-  const { google } = require('googleapis');
-  const credentials = require('../plucky-sound-443612-q1-c4d42dff8c65.json');
+  if (!process.env.GOOGLE_CLIENT_EMAIL || !process.env.GOOGLE_PRIVATE_KEY) {
+    console.log('Google credentials not configured, skipping Google indexing');
+    return;
+  }
 
-  // Create JWT client
-  const auth = new google.auth.JWT(
-    credentials.client_email,
-    null,
-    credentials.private_key,
-    ['https://www.googleapis.com/auth/indexing'],
-    null
-  );
+  try {
+    const { google } = await import('googleapis');
+    const jwtClient = new google.auth.JWT(
+      process.env.GOOGLE_CLIENT_EMAIL,
+      undefined,
+      process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      ['https://www.googleapis.com/auth/indexing'],
+    );
 
-  // Create indexing client
-  const indexing = google.indexing({
-    version: 'v3',
-    auth: auth
-  });
+    // Create indexing client
+    const indexing = google.indexing({
+      version: 'v3',
+      auth: jwtClient
+    });
 
-  const batchSize = 100;
-  const batches = Math.ceil(urls.length / batchSize);
+    const batchSize = 100;
+    const batches = Math.ceil(urls.length / batchSize);
 
-  for (let i = 0; i < batches; i++) {
-    const batchUrls = urls.slice(i * batchSize, (i + 1) * batchSize);
-    console.log(`Processing Google batch ${i + 1}/${batches} (${batchUrls.length} URLs)`);
-    console.log('Sample URLs from batch:', batchUrls.slice(0, 2));
+    for (let i = 0; i < batches; i++) {
+      const batchUrls = urls.slice(i * batchSize, (i + 1) * batchSize);
+      console.log(`Processing Google batch ${i + 1}/${batches} (${batchUrls.length} URLs)`);
+      console.log('Sample URLs from batch:', batchUrls.slice(0, 2));
 
-    try {
-      const responses = await Promise.all(batchUrls.map(async (url) => {
-        try {
-          const response = await indexing.urlNotifications.publish({
-            requestBody: {
-              url: url,
-              type: 'URL_UPDATED'
+      try {
+        const responses = await Promise.all(batchUrls.map(async (url) => {
+          try {
+            const response = await indexing.urlNotifications.publish({
+              requestBody: {
+                url: url,
+                type: 'URL_UPDATED'
+              }
+            });
+            console.log(`Successfully submitted URL: ${url}`);
+            return response;
+          } catch (error: any) {
+            if (error?.response?.status === 403) {
+              console.error('Permission denied. Please ensure domain ownership is verified in Google Search Console.');
+              console.error('Error details:', error?.response?.data);
+            } else if (error?.response?.status === 429) {
+              console.error('Rate limit exceeded. Waiting before retrying...');
+              await new Promise(resolve => setTimeout(resolve, 60000)); // Wait 1 minute
             }
-          });
-          console.log(`Successfully submitted URL: ${url}`);
-          return response;
-        } catch (error: any) {
-          if (error?.response?.status === 403) {
-            console.error('Permission denied. Please ensure domain ownership is verified in Google Search Console.');
-            console.error('Error details:', error?.response?.data);
-          } else if (error?.response?.status === 429) {
-            console.error('Rate limit exceeded. Waiting before retrying...');
-            await new Promise(resolve => setTimeout(resolve, 60000)); // Wait 1 minute
+            console.error(`Error submitting URL ${url}:`, error?.message || 'Unknown error');
+            if (error?.response?.data) {
+              console.error('Response data:', error.response.data);
+            }
+            return null;
           }
-          console.error(`Error submitting URL ${url}:`, error?.message || 'Unknown error');
-          if (error?.response?.data) {
-            console.error('Response data:', error.response.data);
-          }
-          return null;
+        }));
+
+        // Update submission history for successfully submitted URLs
+        const successfulUrls = responses
+          .map((response, index) => response ? batchUrls[index] : null)
+          .filter((url): url is string => url !== null);
+
+        if (successfulUrls.length > 0) {
+          await updateSubmissionHistory(successfulUrls, 'google');
+          console.log(`Successfully submitted ${successfulUrls.length} URLs to Google`);
         }
-      }));
 
-      // Update submission history for successfully submitted URLs
-      const successfulUrls = responses
-        .map((response, index) => response ? batchUrls[index] : null)
-        .filter((url): url is string => url !== null);
-
-      if (successfulUrls.length > 0) {
-        await updateSubmissionHistory(successfulUrls, 'google');
-        console.log(`Successfully submitted ${successfulUrls.length} URLs to Google`);
-      }
-
-      // Add delay to respect rate limits
-      await new Promise(resolve => setTimeout(resolve, 2000)); // 2 second delay between batches
-    } catch (error: any) {
-      console.error('Batch submission error:', error?.message || 'Unknown error');
-      if (error?.response?.data) {
-        console.error('Response data:', error.response.data);
+        // Add delay to respect rate limits
+        await new Promise(resolve => setTimeout(resolve, 2000)); // 2 second delay between batches
+      } catch (error: any) {
+        console.error('Batch submission error:', error?.message || 'Unknown error');
+        if (error?.response?.data) {
+          console.error('Response data:', error.response.data);
+        }
       }
     }
+  } catch (error) {
+    console.error('Error in Google indexing:', error);
+    throw error;
   }
 }
 
