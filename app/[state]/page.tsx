@@ -32,8 +32,8 @@ export async function generateMetadata({ params }: StatePageProps): Promise<Meta
   }
 
   const title = `Professional Appliance Repair Services in ${state.name}`;
-  const description = `Expert appliance repair and maintenance services in ${state.name}. IQ Appliance Repair provides professional repairs of refrigerators, ovens, dishwashers, washers, dryers, and more throughout ${state.name}. Same-day service available.`;
-  const url = `https://www.iqappliancerepair.com/${state.id}`;
+  const description = `Expert appliance repair and maintenance services in ${state.name}. IQ Appliances provides professional repairs of refrigerators, ovens, dishwashers, washers, dryers, and more throughout ${state.name}. Same-day service available.`;
+  const url = `https://iqappliances.com/${state.id}`;
 
   const keywords = [
     'appliance repair',
@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: StatePageProps): Promise<Meta
     alternates: {
       canonical: url,
     },
-    authors: [{ name: 'IQ Appliance Repair' }],
+    authors: [{ name: 'IQ Appliances' }],
     category: 'Appliance Repair Services',
     openGraph: {
       title,
@@ -69,7 +69,7 @@ export async function generateMetadata({ params }: StatePageProps): Promise<Meta
       type: 'website',
       locale: 'en_US',
       url,
-      siteName: 'IQ Appliance Repair',
+      siteName: 'IQ Appliances',
       images: [
         {
           url: '/images/appliance-repair.webp',
@@ -84,8 +84,8 @@ export async function generateMetadata({ params }: StatePageProps): Promise<Meta
       card: 'summary_large_image',
       title,
       description,
-      creator: '@iqappliancerepair',
-      site: '@iqappliancerepair',
+      creator: '@iqappliances',
+      site: '@iqappliances',
       images: ['/images/appliance-repair.webp'],
     },
     robots: {

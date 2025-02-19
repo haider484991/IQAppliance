@@ -24,9 +24,9 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
     };
   }
 
-  const title = `${service.title} | In Touch Appliance Repair`;
+  const title = `${service.title} | IQ Appliances`;
   const description = service.description;
-  const url = `https://intouchappliancerepair.com/services/${service.slug}`;
+  const url = `https://iqappliances.com/services/${service.slug}`;
 
   return {
     title,
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
       title,
       description,
       url,
-      siteName: 'In Touch Appliance Repair',
+      siteName: 'IQ Appliances',
       type: 'website',
       locale: 'en_US',
       images: [{
@@ -49,8 +49,8 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
       card: 'summary_large_image',
       title,
       description,
-      creator: '@intouchappliance',
-      site: '@intouchappliance',
+      creator: '@iqappliances',
+      site: '@iqappliances',
       images: [service.image],
     },
     alternates: {

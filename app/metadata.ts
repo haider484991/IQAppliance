@@ -1,16 +1,16 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.intouchappliance.com'),
+  metadataBase: new URL('https://iqappliances.com'),
   title: {
-    template: '%s | In Touch Appliance Repair',
-    default: 'Professional Appliance Repair Services in Florida | In Touch Appliance Repair',
+    template: '%s | IQ Appliances',
+    default: ' IQ Appliances connects homeowners and businesses in New York, New Jersey, and Pennsylvania with skilled technicians for expert repair of dishwashers, refrigerators, stoves, ovens, ranges, washers, and dryers. Call 1-833-348-1798 today! | IQ Appliances',
   },
-  description: 'Expert Appliance Repair Services: Refrigerators, Ovens, Dishwashers, and More. Fast, Reliable Service Throughout Florida. Call 1-833-366-0402',
-  keywords: ['appliance repair', 'refrigerator repair', 'oven repair', 'dishwasher repair', 'washer repair', 'dryer repair', 'Florida appliance repair', 'same day service'],
-  authors: [{ name: 'In Touch Appliance Repair' }],
-  creator: 'In Touch Appliance Repair',
-  publisher: 'In Touch Appliance Repair',
+  description: 'IQ Appliances connects homeowners and businesses in New York, New Jersey, and Pennsylvania with skilled technicians for expert repair of dishwashers, refrigerators, stoves, ovens, ranges, washers, and dryers. Call 1-833-348-1798 today!',
+  keywords: ['appliance repair', 'refrigerator repair', 'oven repair', 'dishwasher repair', 'washer repair', 'dryer repair', 'New York appliance repair', 'New Jersey appliance repair', 'Pennsylvania appliance repair', 'same day service'],
+  authors: [{ name: 'IQ Appliances' }],
+  creator: 'IQ Appliances',
+  publisher: 'IQ Appliances',
   icons: {
     icon: [
       { url: '/images/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
@@ -25,10 +25,10 @@ export const metadata: Metadata = {
     address: true,
   },
   openGraph: {
-    title: 'Professional Appliance Repair Services in Florida',
-    description: 'Expert Appliance Repair Services: Refrigerators, Ovens, Dishwashers, and More. Fast, Reliable Service Throughout Florida. Call 1-833-366-0402',
-    url: 'https://www.intouchappliancerepair.com',
-    siteName: 'In Touch Appliance Repair',
+    title: 'Professional Appliance Repair Services in New York, New Jersey, and Pennsylvania',
+    description: 'IQ Appliances connects homeowners and businesses in New York, New Jersey, and Pennsylvania with skilled technicians for expert repair of dishwashers, refrigerators, stoves, ovens, ranges, washers, and dryers. Call 1-833-348-1798 today!',
+    url: 'https://iqappliances.com',
+    siteName: 'IQ Appliances',
     locale: 'en_US',
     type: 'website',
     images: [
@@ -36,14 +36,14 @@ export const metadata: Metadata = {
         url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'In Touch Appliance Repair - Professional Appliance Services',
+        alt: 'IQ Appliances - Professional Appliance Services',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Professional Appliance Repair Services in Florida',
-    description: 'Expert Appliance Repair Services: Refrigerators, Ovens, Dishwashers, and More. Fast, Reliable Service Throughout Florida. Call 1-833-366-0402',
+      title: 'Professional Appliance Repair Services in New York, New Jersey, and Pennsylvania',
+    description: 'IQ Appliances connects homeowners and businesses in New York, New Jersey, and Pennsylvania with skilled technicians for expert repair of dishwashers, refrigerators, stoves, ovens, ranges, washers, and dryers. Call 1-833-348-1798 today!',
     images: ['/images/twitter-image.jpg'],
   },
   robots: {

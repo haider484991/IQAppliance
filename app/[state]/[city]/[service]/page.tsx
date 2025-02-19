@@ -51,20 +51,20 @@ export async function generateMetadata({ params }: LocationPageProps): Promise<M
     };
   }
 
-  const metadataBase = new URL('https://www.iqappliancerepair.com');
+  const metadataBase = new URL('https://iqappliances.com');
   
   // Get service-specific content based on service type
   let serviceContent;
   switch (params.service) {
     case 'appliance-repair':
       serviceContent = {
-        title: `${city.name} ${stateData.abbreviation} Appliance Repair | IQ Appliance Repair`,
+        title: `${city.name} ${stateData.abbreviation} Appliance Repair`,
         description: `Major Appliance repair ${city.name} ${stateData.abbreviation}. IQ Appliances repairs refrigerators, dishwashers, stoves, ovens, washers, dryers, and more. Call 1-833-348-1798 today!`
       };
       break;
     default:
       serviceContent = {
-        title: `${city.name} ${stateData.abbreviation} Appliance Repair | IQ Appliance Repair`,
+        title: `${city.name} ${stateData.abbreviation} Appliance Repair`,
         description: `Major Appliance repair ${city.name} ${stateData.abbreviation}. IQ Appliances repairs refrigerators, dishwashers, stoves, ovens, washers, dryers, and more. Call 1-833-348-1798 today!`
       };
   }
