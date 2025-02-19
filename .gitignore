@@ -36,4 +36,11 @@ yarn-error.log*
 next-env.d.ts
 .vercel
 
+# service account keys and credentials
+*.json.key
+*-service-account.json
+*-credentials.json
+plucky-sound-443612-q1-c4d42dff8c65.json
+tango7-36416e2b6be5.json
+
 .vercel
