@@ -17,7 +17,13 @@ module.exports = {
     '/california/*',  // Exclude other state URLs
     '/texas/*',
     '/arizona/*',
-    '/locations/*'  // Exclude old location structure
+    '/locations/*',  // Exclude old location structure
+    '/new_york/*/*',  // Exclude city landing pages but allow service pages
+    '/new_jersey/*/*',
+    '/pennsylvania/*/*',
+    '!/new_york/*/*/appliance-repair',  // Keep service pages
+    '!/new_jersey/*/*/appliance-repair',
+    '!/pennsylvania/*/*/appliance-repair'
   ],
   sitemapBaseFileName: 'sitemap',
   robotsTxtOptions: {
@@ -35,9 +41,9 @@ module.exports = {
           '/*.svg',
           '/*.ico',
           '/*.webp',
-          '/new_york/*',  // Explicitly allow tri-state URLs
-          '/new_jersey/*',
-          '/pennsylvania/*'
+          '/new_york/*/appliance-repair',  // Only allow service pages
+          '/new_jersey/*/appliance-repair',
+          '/pennsylvania/*/appliance-repair'
         ],
         disallow: [
           '/404',
@@ -48,10 +54,12 @@ module.exports = {
           '/*?*',  // Prevent crawling of URLs with query parameters
           '/*.json',
           '/florida/*',  // Explicitly disallow other state URLs
-          '/california/*',
-          '/texas/*',
-          '/arizona/*',
-          '/locations/*'
+          '/new_york/*',  // Disallow city landing pages
+          '/new_jersey/*',
+          '/pennsylvania/*',
+          '!/new_york/*/appliance-repair',  // But allow service pages
+          '!/new_jersey/*/appliance-repair',
+          '!/pennsylvania/*/appliance-repair'
         ],
         crawlDelay: 10
       },

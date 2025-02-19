@@ -157,7 +157,7 @@ export default function Footer() {
                       return (
                         <Link
                           key={`${state.id}-city-${index}`}
-                          href={`/${state.id}/${formattedSlug}`}
+                          href={`/${state.id}/${formattedSlug}/appliance-repair`}
                           className="text-gray-300 hover:text-blue-200 transition-colors text-sm flex items-center group"
                         >
                           <ChevronRight className="h-3 w-3 mr-1 flex-shrink-0 text-blue-400 group-hover:text-blue-200" />
