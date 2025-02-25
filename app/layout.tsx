@@ -88,8 +88,8 @@ export default function RootLayout({
         <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
         
         {/* Social Media Verification */}
-        <meta name="google-site-verification" content="afI3JWClTJ2cWlR4oxO-hVT2yQDeZXJkesX8tnC723g" />
-        <script src="https://analytics.ahrefs.com/analytics.js" data-key="CqGDw8tDmu0JUN4Jjke6Ng" async></script>
+        <meta name="google-site-verification" content="Oa6rm3WoNwtOI9doI2ZMjjvRRdlOA9YL4XsHkx3nsBY" />
+        <script src="https://analytics.ahrefs.com/analytics.js" data-key="CqGDw8tDmu0JUN4Jke6Ng" async></script>
       </head>
       <body className="min-h-screen bg-white flex flex-col">
         <Suspense fallback={<LoadingHeader />}>
